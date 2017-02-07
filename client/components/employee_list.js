@@ -6,6 +6,15 @@ import EmployeeDetail from './employee_detail';
 const PER_PAGE = 20;
 
 class EmployeeList extends Component {
+  componentWillMount() {
+    this.page = 1;
+  }
+
+  handleButtonClick() {
+    this.page += 1;
+    Meteor.subscribe('employees', PER_PAGE * this.page);
+  }
+
   render() {
     // props.employees => an array of employee objects
     return(
@@ -15,10 +24,12 @@ class EmployeeList extends Component {
             <EmployeeDetail key={employee._id} employee={employee} />
           )}
         </div>
-        <button onClick={() => Meteor.subscribe('employees', 40) }
-          className="btn-lg btn-primary">
-          Load more...
-        </button>
+        <p className="text-center">
+          <button onClick={this.handleButtonClick.bind(this)}
+            className="btn-lg btn-primary">
+            Load more...
+          </button>
+        </p>
       </div>
     );
   }
